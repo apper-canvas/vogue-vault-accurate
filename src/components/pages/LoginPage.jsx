@@ -1,50 +1,45 @@
-import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
-import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import Input from "@/components/atoms/Input";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useAuth } from "@/layouts/Root";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { login } = useAuth();
-  const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    email: "",
-    password: ""
-  });
+  const { isInitialized } = useAuth();
+  const { user } = useSelector((state) => state.user);
 
-  const from = location.state?.from || "/account";
-
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!formData.email || !formData.password) {
-      toast.error("Please fill in all fields");
-      return;
+  // Check if user is already authenticated and handle redirect
+  useEffect(() => {
+    if (user) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectPath = urlParams.get("redirect") || "/";
+      navigate(redirectPath);
     }
+  }, [user, navigate]);
 
-    setLoading(true);
-
-    try {
-      await login(formData.email, formData.password);
-      toast.success("Login successful!");
-      navigate(from, { replace: true });
-    } catch (error) {
-      toast.error(error.message || "Login failed. Please try again.");
-    } finally {
-      setLoading(false);
+  // Wait for authentication to initialize before showing ApperUI
+  useEffect(() => {
+    if (isInitialized && !user && window.ApperSDK?.ApperUI) {
+      window.ApperSDK.ApperUI.showLogin("#authentication");
     }
-  };
+  }, [isInitialized, user]);
+
+  // Show loading while initializing
+  if (!isInitialized) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-primary/60">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render ApperUI if user is already authenticated
+  if (user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
@@ -58,65 +53,21 @@ const LoginPage = () => {
           </p>
         </div>
 
-        <div className="bg-white rounded-lg p-8 shadow-sm">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <Input
-              label="Email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Enter your email"
-              required
-            />
+        {/* ApperUI will render the login form here */}
+        <div id="authentication" className="bg-white rounded-lg p-8 shadow-sm">
+          {/* ApperUI login form will be inserted here */}
+        </div>
 
-            <Input
-              label="Password"
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              placeholder="Enter your password"
-              required
-            />
-
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-full"
-              disabled={loading}
+        <div className="mt-6 text-center">
+          <p className="text-primary/60">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="text-accent hover:underline font-medium"
             >
-              {loading ? (
-                <>
-                  <ApperIcon name="Loader2" size={20} className="animate-spin" />
-                  Signing in...
-                </>
-              ) : (
-                <>
-                  Sign In
-                  <ApperIcon name="ArrowRight" size={20} />
-                </>
-              )}
-            </Button>
-          </form>
-
-          <div className="mt-6 text-center">
-            <p className="text-primary/60">
-              Don't have an account?{" "}
-              <Link
-                to="/register"
-                className="text-accent hover:underline font-medium"
-              >
-                Create one
-              </Link>
-            </p>
-          </div>
-
-          <div className="mt-8 pt-6 border-t border-secondary">
-            <p className="text-sm text-primary/60 text-center">
-              Demo credentials: john.doe@example.com / john_doe123
-            </p>
-          </div>
+              Create one
+            </Link>
+          </p>
         </div>
       </div>
     </div>

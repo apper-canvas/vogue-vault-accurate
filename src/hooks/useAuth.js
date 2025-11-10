@@ -1,3 +1,7 @@
+// This hook is no longer used for authentication - authentication is now handled by ApperUI
+// through Root.jsx callbacks and Redux state management.
+// Keeping this file for backwards compatibility if needed elsewhere in the codebase.
+
 import { useState, useEffect } from "react";
 import authService from "@/services/api/authService";
 
@@ -11,18 +15,6 @@ export const useAuth = () => {
     setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
-    const loggedInUser = await authService.login(email, password);
-    setUser(loggedInUser);
-    return loggedInUser;
-  };
-
-  const register = async (userData) => {
-    const newUser = await authService.register(userData);
-    setUser(newUser);
-    return newUser;
-  };
-
   const logout = async () => {
     await authService.logout();
     setUser(null);
@@ -35,8 +27,6 @@ export const useAuth = () => {
   return {
     user,
     loading,
-    login,
-    register,
     logout,
     isAuthenticated
   };

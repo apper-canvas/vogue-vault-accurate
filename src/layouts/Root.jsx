@@ -147,7 +147,7 @@ export default function Root() {
   }
 
   return (
-    <AuthContext.Provider value={{ logout, isInitialized: authInitialized, user }}>
+<AuthContext.Provider value={{ logout, isInitialized: authInitialized, user }}>
       <Outlet />
       <ToastContainer
         position="top-right"
