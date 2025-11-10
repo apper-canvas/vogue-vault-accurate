@@ -37,19 +37,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .Toastify__toast--success {
-  background-color: #00CC66;
+  background-color: #10B981;
 }
 
 .Toastify__toast--error {
-  background-color: #FF3366;
+  background-color: #EF4444;
 }
 
 .Toastify__toast--warning {
-  background-color: #FFAA00;
+  background-color: #F59E0B;
 }
 
 .Toastify__toast--info {
-  background-color: #00AAFF;
+  background-color: #3B82F6;
 }
 
 .Toastify__progress-bar {
