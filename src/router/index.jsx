@@ -11,6 +11,7 @@ const CategoryPage = lazy(() => import("@/components/pages/CategoryPage"));
 const ProductDetailPage = lazy(() => import("@/components/pages/ProductDetailPage"));
 const CartPage = lazy(() => import("@/components/pages/CartPage"));
 const CheckoutPage = lazy(() => import("@/components/pages/CheckoutPage"));
+const ContactPage = lazy(() => import("@/components/pages/ContactPage"));
 const WishlistPage = lazy(() => import("@/components/pages/WishlistPage"));
 const LoginPage = lazy(() => import("@/components/pages/LoginPage"));
 const RegisterPage = lazy(() => import("@/components/pages/RegisterPage"));
@@ -103,8 +104,12 @@ export const router = createBrowserRouter([
             element: <OrderHistoryPage />
           }),
           createRoute({
-            path: "profile",
+path: "profile",
             element: <ProfilePage />
+          }),
+          route({
+            path: "contact",
+            element: <ContactPage />
           }),
         ]
       },

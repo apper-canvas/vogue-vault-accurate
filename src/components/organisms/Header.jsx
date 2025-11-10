@@ -18,12 +18,13 @@ const Header = () => {
   const { user, logout } = useAuth();
   const cartCount = getCartCount();
 
-  const navItems = [
+const navItems = [
     { label: "Home", path: "/" },
     { label: "Women", path: "/category/women" },
     { label: "Men", path: "/category/men" },
     { label: "Accessories", path: "/category/accessories" },
-    { label: "Sale", path: "/sale" }
+    { label: "Sale", path: "/sale" },
+    { label: "Contact Us", path: "/contact" }
   ];
 
   const handleLogout = async () => {
