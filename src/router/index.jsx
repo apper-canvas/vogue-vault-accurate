@@ -106,8 +106,8 @@ export const router = createBrowserRouter([
           createRoute({
 path: "profile",
             element: <ProfilePage />
-          }),
-          route({
+}),
+          createRoute({
             path: "contact",
             element: <ContactPage />
           }),
