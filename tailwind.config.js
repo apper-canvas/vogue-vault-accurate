@@ -7,15 +7,15 @@ export default {
   theme: {
 extend: {
       colors: {
-        primary: "#b4a7d6",
-        secondary: "#f8f9fa", 
-        accent: "#a8c8ec",
+        primary: "#0066FF",
+        secondary: "#FFFFFF", 
+        accent: "#FF6600",
         surface: "#ffffff",
-        background: "#fefcf8",
-        success: "#a7d3c7",
-        warning: "#f2c4a3",
-        error: "#e8a5a5",
-        info: "#a5c9ea"
+        background: "#ffffff",
+        success: "#00CC66",
+        warning: "#FFAA00",
+        error: "#FF3366",
+        info: "#00AAFF"
       },
       fontFamily: {
         display: ["Playfair Display", "serif"],
