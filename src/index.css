@@ -14,7 +14,7 @@ body {
   font-family: "Inter", sans-serif;
 -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-background-color: #FDFDFD;
+background-color: #FEFEFE;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -37,18 +37,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .Toastify__toast--success {
-  background-color: #A7E6C7;
+  background-color: #BBF7D0;
 }
 .Toastify__toast--error {
-  background-color: #FCA5A5;
+  background-color: #FECACA;
 }
 
 .Toastify__toast--warning {
-  background-color: #F5D5AE;
+  background-color: #FED7AA;
 }
 
 .Toastify__toast--info {
-  background-color: #B3D4F1;
+  background-color: #BFDBFE;
 }
 
 .Toastify__progress-bar {
