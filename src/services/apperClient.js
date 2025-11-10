@@ -8,25 +8,28 @@ class ApperClientSingleton {
     this._isInitializing = false;
   }
 
-  getInstance() {
+async getInstance() {
     // Return cached instance if exists
     if (this._client) {
       return this._client;
     }
 
-    // SDK not loaded yet
-    if (!window.ApperSDK) {
-      console.warn('ApperSDK not available on window object');
-      return null;
-    }
-
     // Prevent simultaneous initialization
     if (this._isInitializing) {
-      return null;
+      // Wait for current initialization to complete
+      return await this.waitForInitialization();
     }
 
     try {
       this._isInitializing = true;
+      
+      // Wait for SDK to be available with timeout
+      await this.waitForSDK();
+      
+      if (!window.ApperSDK) {
+        console.error('ApperSDK still not available after waiting');
+        return null;
+      }
       
       const { ApperClient } = window.ApperSDK;
       const projectId = import.meta.env.VITE_APPER_PROJECT_ID;
@@ -51,6 +54,24 @@ class ApperClientSingleton {
     }
   }
 
+  async waitForSDK(maxWaitTime = 10000) {
+    const startTime = Date.now();
+    
+    while (!window.ApperSDK && (Date.now() - startTime) < maxWaitTime) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
+  }
+
+  async waitForInitialization(maxWaitTime = 5000) {
+    const startTime = Date.now();
+    
+    while (this._isInitializing && (Date.now() - startTime) < maxWaitTime) {
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    
+    return this._client;
+  }
+
   reset() {
     if (this._client) {
       this._client = null;
@@ -67,13 +88,12 @@ const getSingleton = () => {
   }
   return _singletonInstance;
 };
-
-// Main export
-export const getApperClient = () => getSingleton().getInstance();
+// Main export - now async
+export const getApperClient = async () => await getSingleton().getInstance();
 
 // Alternative exports
 export const apperClientSingleton = {
-  getInstance: () => getSingleton().getInstance(),
+  getInstance: async () => await getSingleton().getInstance(),
   reset: () => getSingleton().reset(),
 };
 
